@@ -12,7 +12,9 @@ http://localhost:15672
 
 
 
-Tutorial:
+Tutorials:
 
 https://rameshfadatare.medium.com/spring-boot-microservices-with-rabbitmq-example-92a38cbe08fc
+
+https://medium.com/@sachinmewar800/rabbitmq-with-spring-amqp-using-spring-boot-4a62e68a6f1b
 

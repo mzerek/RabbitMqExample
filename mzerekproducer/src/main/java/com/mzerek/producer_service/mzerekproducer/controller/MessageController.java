@@ -1,24 +1,30 @@
 package com.mzerek.producer_service.mzerekproducer.controller;
 
-import com.mzerek.producer_service.mzerekproducer.service.MessageProducer;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import com.mzerek.producer_service.mzerekproducer.model.Animal;
+import com.mzerek.producer_service.mzerekproducer.service.MessageProducerService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
-@RequestMapping("api/v1")
+@RequiredArgsConstructor
+@RequestMapping("api/v1/publisher/")
 public class MessageController {
 
-    private final MessageProducer messageProducer;
+    private final MessageProducerService messageProducerService;
 
-    public MessageController(MessageProducer messageProducer) {
-        this.messageProducer = messageProducer;
+    @PostMapping("/publish")
+    public String sendTerrestrial(@RequestParam(name = "routing-key") String routingKey,
+                                  @RequestBody Animal animal) {
+        animal.setId(UUID.randomUUID().toString());
+        messageProducerService.sendToRabbitMq(animal, routingKey);
+        return "Message sent to queue Successfully";
     }
 
     @GetMapping("/send")
     public String sendMessage(@RequestParam String message) {
-        messageProducer.sendMessage(message);
+        messageProducerService.sendMessage(message);
         return "Message sent: " + message;
     }
 }
